@@ -1,24 +1,21 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+For Ubuntu:
+1. Install Postgres.  
+  `$ sudo apt-get update`  
+	`$ sudo apt-get install postgresql postgresql-contrib libpq-dev`
 
-Things you may want to cover:
+2. Create database user  
+  `$ sudo -u postgres createuser -s pguser`  
+  `$ sudo -u postgres psql`
 
-* Ruby version
+3. Set database user password  
+  `postgres=# \password pguser`  
+  `postgres=# \q`
 
-* System dependencies
+4. Copy `.env.example` to `.env`.
 
-* Configuration
+5. Add database user password to .env as `DATABASE_PASSWORD`.
 
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+6. Create database  
+  `$ bin/rails db:create`
