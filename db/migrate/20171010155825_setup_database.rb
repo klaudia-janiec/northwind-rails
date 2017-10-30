@@ -49,14 +49,14 @@ class SetupDatabase < ActiveRecord::Migration[5.1]
       t.string :region_description, null: false, limit: 50
     end
 
-    create_table :teritories do |t|
-      t.string :teritory_description, null: false, limit: 50
+    create_table :territories do |t|
+      t.string :territory_description, null: false, limit: 50
       t.references :region
     end
 
     create_table :employees do |t|
-      t.string :last_name, limit: 20
-      t.string :first_name, limit: 10
+      t.string :last_name, limit: 20, null: false
+      t.string :first_name, limit: 10, null: false
       t.string :title, limit: 30
       t.string :title_of_courtesy, limit: 25
       t.date :birth_date
@@ -70,17 +70,18 @@ class SetupDatabase < ActiveRecord::Migration[5.1]
       t.string :extension, limit: 4
       t.binary :photo
       t.text :notes
-      t.integer :reports_to, index: true
+      t.bigint :reports_to, index: true
       t.string :photo_path
     end
 
-    create_table :employees_territories do |t|
-      t.references :employee
-      t.references :teritory
+    create_table :employee_territories, id: false do |t|
+      t.references :employee, null: false
+      t.references :territory, null: false
     end
+    execute "ALTER TABLE employee_territories ADD PRIMARY KEY (employee_id, territory_id);"
 
     create_table :shippers do |t|
-      t.string :company_name, limit: 40
+      t.string :company_name, limit: 40, null: false
       t.string :phone, limit: 24
     end
 
@@ -90,7 +91,7 @@ class SetupDatabase < ActiveRecord::Migration[5.1]
       t.date :order_date
       t.date :required_date
       t.date :shipped_date
-      t.integer :ship_via, index: true
+      t.bigint :ship_via, index: true
       t.integer :freight
       t.string :ship_name, limit: 40
       t.string :ship_address, limit: 60
@@ -100,35 +101,38 @@ class SetupDatabase < ActiveRecord::Migration[5.1]
       t.string :ship_country, limit: 15
     end
 
-    create_table :order_details do |t|
-      t.references :product
-      t.references :order
+    create_table :order_details, id: false do |t|
+      t.references :product, null: false
+      t.references :order, null: false
       t.integer :unit_price, null: false
       t.integer :quantity, null: false, limit: 2
       t.decimal :discount, null: false
     end
+    execute "ALTER TABLE order_details ADD PRIMARY KEY (product_id, order_id);"
 
-    create_table :customer_demos do |t|
+    create_table :customer_demographics, id: false do |t|
+      t.primary_key :customer_type_id
       t.text :customer_description
     end
 
-    create_table :customers_customer_demos do |t|
-      t.references :customer
-      t.references :customer_demo
+    create_table :customer_customer_demos, id: false do |t|
+      t.references :customer, null: false
+      t.references :customer_type, null: false
     end
+    execute "ALTER TABLE customer_customer_demos ADD PRIMARY KEY (customer_id, customer_type_id);"
 
     add_foreign_key :orders, :shippers, column: :ship_via
     add_foreign_key :employees, :employees, column: :reports_to
     add_foreign_key :products, :suppliers
     add_foreign_key :products, :categories
-    add_foreign_key :teritories, :regions
-    add_foreign_key :employees_territories, :employees
-    add_foreign_key :employees_territories, :teritories
+    add_foreign_key :territories, :regions
+    add_foreign_key :employee_territories, :employees
+    add_foreign_key :employee_territories, :territories
     add_foreign_key :orders, :customers
     add_foreign_key :orders, :employees
     add_foreign_key :order_details, :products
     add_foreign_key :order_details, :orders
-    add_foreign_key :customers_customer_demos, :customers
-    add_foreign_key :customers_customer_demos, :customer_demos
+    add_foreign_key :customer_customer_demos, :customers
+    add_foreign_key :customer_customer_demos, :customer_demographics, column: :customer_type_id, primary_key: :customer_type_id
   end
 end

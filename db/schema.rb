@@ -21,7 +21,14 @@ ActiveRecord::Schema.define(version: 20171010155825) do
     t.binary "picture"
   end
 
-  create_table "customer_demos", force: :cascade do |t|
+  create_table "customer_customer_demos", primary_key: ["customer_id", "customer_type_id"], force: :cascade do |t|
+    t.bigint "customer_id", null: false
+    t.bigint "customer_type_id", null: false
+    t.index ["customer_id"], name: "index_customer_customer_demos_on_customer_id"
+    t.index ["customer_type_id"], name: "index_customer_customer_demos_on_customer_type_id"
+  end
+
+  create_table "customer_demographics", primary_key: "customer_type_id", force: :cascade do |t|
     t.text "customer_description"
   end
 
@@ -38,16 +45,16 @@ ActiveRecord::Schema.define(version: 20171010155825) do
     t.string "fax", limit: 24
   end
 
-  create_table "customers_customer_demos", force: :cascade do |t|
-    t.bigint "customer_id"
-    t.bigint "customer_demo_id"
-    t.index ["customer_demo_id"], name: "index_customers_customer_demos_on_customer_demo_id"
-    t.index ["customer_id"], name: "index_customers_customer_demos_on_customer_id"
+  create_table "employee_territories", primary_key: ["employee_id", "territory_id"], force: :cascade do |t|
+    t.bigint "employee_id", null: false
+    t.bigint "territory_id", null: false
+    t.index ["employee_id"], name: "index_employee_territories_on_employee_id"
+    t.index ["territory_id"], name: "index_employee_territories_on_territory_id"
   end
 
   create_table "employees", force: :cascade do |t|
-    t.string "last_name", limit: 20
-    t.string "first_name", limit: 10
+    t.string "last_name", limit: 20, null: false
+    t.string "first_name", limit: 10, null: false
     t.string "title", limit: 30
     t.string "title_of_courtesy", limit: 25
     t.date "birth_date"
@@ -61,21 +68,14 @@ ActiveRecord::Schema.define(version: 20171010155825) do
     t.string "extension", limit: 4
     t.binary "photo"
     t.text "notes"
-    t.integer "reports_to"
+    t.bigint "reports_to"
     t.string "photo_path"
     t.index ["reports_to"], name: "index_employees_on_reports_to"
   end
 
-  create_table "employees_territories", force: :cascade do |t|
-    t.bigint "employee_id"
-    t.bigint "teritory_id"
-    t.index ["employee_id"], name: "index_employees_territories_on_employee_id"
-    t.index ["teritory_id"], name: "index_employees_territories_on_teritory_id"
-  end
-
-  create_table "order_details", force: :cascade do |t|
-    t.bigint "product_id"
-    t.bigint "order_id"
+  create_table "order_details", primary_key: ["product_id", "order_id"], force: :cascade do |t|
+    t.bigint "product_id", null: false
+    t.bigint "order_id", null: false
     t.integer "unit_price", null: false
     t.integer "quantity", limit: 2, null: false
     t.decimal "discount", null: false
@@ -89,7 +89,7 @@ ActiveRecord::Schema.define(version: 20171010155825) do
     t.date "order_date"
     t.date "required_date"
     t.date "shipped_date"
-    t.integer "ship_via"
+    t.bigint "ship_via"
     t.integer "freight"
     t.string "ship_name", limit: 40
     t.string "ship_address", limit: 60
@@ -121,7 +121,7 @@ ActiveRecord::Schema.define(version: 20171010155825) do
   end
 
   create_table "shippers", force: :cascade do |t|
-    t.string "company_name", limit: 40
+    t.string "company_name", limit: 40, null: false
     t.string "phone", limit: 24
   end
 
@@ -139,17 +139,17 @@ ActiveRecord::Schema.define(version: 20171010155825) do
     t.text "home_page"
   end
 
-  create_table "teritories", force: :cascade do |t|
-    t.string "teritory_description", limit: 50, null: false
+  create_table "territories", force: :cascade do |t|
+    t.string "territory_description", limit: 50, null: false
     t.bigint "region_id"
-    t.index ["region_id"], name: "index_teritories_on_region_id"
+    t.index ["region_id"], name: "index_territories_on_region_id"
   end
 
-  add_foreign_key "customers_customer_demos", "customer_demos"
-  add_foreign_key "customers_customer_demos", "customers"
+  add_foreign_key "customer_customer_demos", "customer_demographics", column: "customer_type_id", primary_key: "customer_type_id"
+  add_foreign_key "customer_customer_demos", "customers"
+  add_foreign_key "employee_territories", "employees"
+  add_foreign_key "employee_territories", "territories"
   add_foreign_key "employees", "employees", column: "reports_to"
-  add_foreign_key "employees_territories", "employees"
-  add_foreign_key "employees_territories", "teritories"
   add_foreign_key "order_details", "orders"
   add_foreign_key "order_details", "products"
   add_foreign_key "orders", "customers"
@@ -157,5 +157,5 @@ ActiveRecord::Schema.define(version: 20171010155825) do
   add_foreign_key "orders", "shippers", column: "ship_via"
   add_foreign_key "products", "categories"
   add_foreign_key "products", "suppliers"
-  add_foreign_key "teritories", "regions"
+  add_foreign_key "territories", "regions"
 end
