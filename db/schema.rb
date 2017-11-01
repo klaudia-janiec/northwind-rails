@@ -139,7 +139,7 @@ ActiveRecord::Schema.define(version: 20171010155825) do
     t.string "country", limit: 15
     t.string "phone", limit: 24
     t.string "fax", limit: 24
-    t.text "home_page"
+    t.string "home_page"
   end
 
   create_table "territories", force: :cascade do |t|
