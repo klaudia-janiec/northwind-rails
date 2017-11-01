@@ -35,8 +35,8 @@ class SetupDatabase < ActiveRecord::Migration[5.1]
 
     create_table :products do |t|
       t.string :product_name, null: false, limit: 40
-      t.references :supplier
-      t.references :category
+      t.references :supplier, foreign_key: true
+      t.references :category, foreign_key: true
       t.string :quantity_per_unit, limit: 20
       t.integer :unit_price
       t.integer :units_in_stock, limit: 2
@@ -51,7 +51,7 @@ class SetupDatabase < ActiveRecord::Migration[5.1]
 
     create_table :territories do |t|
       t.string :territory_description, null: false, limit: 50
-      t.references :region
+      t.references :region, foreign_key: true
     end
 
     create_table :employees do |t|
@@ -73,10 +73,11 @@ class SetupDatabase < ActiveRecord::Migration[5.1]
       t.bigint :reports_to, index: true
       t.string :photo_path
     end
+    add_foreign_key :employees, :employees, column: :reports_to
 
     create_table :employee_territories do |t|
-      t.references :employee, null: false
-      t.references :territory, null: false
+      t.references :employee, null: false, foreign_key: true
+      t.references :territory, null: false, foreign_key: true
     end
     add_index :employee_territories, [:employee_id, :territory_id], unique: true
 
@@ -86,8 +87,8 @@ class SetupDatabase < ActiveRecord::Migration[5.1]
     end
 
     create_table :orders do |t|
-      t.references :customer
-      t.references :employee
+      t.references :customer, foreign_key: true
+      t.references :employee, foreign_key: true
       t.date :order_date
       t.date :required_date
       t.date :shipped_date
@@ -100,10 +101,11 @@ class SetupDatabase < ActiveRecord::Migration[5.1]
       t.string :ship_postal_code, limit: 10
       t.string :ship_country, limit: 15
     end
+    add_foreign_key :orders, :shippers, column: :ship_via
 
     create_table :order_details do |t|
-      t.references :product, null: false
-      t.references :order, null: false
+      t.references :product, null: false, foreign_key: true
+      t.references :order, null: false, foreign_key: true
       t.integer :unit_price, null: false
       t.integer :quantity, null: false, limit: 2
       t.decimal :discount, null: false
@@ -116,23 +118,10 @@ class SetupDatabase < ActiveRecord::Migration[5.1]
     end
 
     create_table :customer_customer_demos do |t|
-      t.references :customer, null: false
+      t.references :customer, null: false, foreign_key: true
       t.references :customer_type, null: false
     end
     add_index :customer_customer_demos, [:customer_id, :customer_type_id], unique: true, name: "index_cust_cust_demos_cust_id_cust_type_id"
-
-    add_foreign_key :orders, :shippers, column: :ship_via
-    add_foreign_key :employees, :employees, column: :reports_to
-    add_foreign_key :products, :suppliers
-    add_foreign_key :products, :categories
-    add_foreign_key :territories, :regions
-    add_foreign_key :employee_territories, :employees
-    add_foreign_key :employee_territories, :territories
-    add_foreign_key :orders, :customers
-    add_foreign_key :orders, :employees
-    add_foreign_key :order_details, :products
-    add_foreign_key :order_details, :orders
-    add_foreign_key :customer_customer_demos, :customers
     add_foreign_key :customer_customer_demos, :customer_demographics, column: :customer_type_id, primary_key: :customer_type_id
   end
 end
