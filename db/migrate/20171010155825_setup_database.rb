@@ -74,11 +74,11 @@ class SetupDatabase < ActiveRecord::Migration[5.1]
       t.string :photo_path
     end
 
-    create_table :employee_territories, id: false do |t|
+    create_table :employee_territories do |t|
       t.references :employee, null: false
       t.references :territory, null: false
     end
-    execute "ALTER TABLE employee_territories ADD PRIMARY KEY (employee_id, territory_id);"
+    add_index :employee_territories, [:employee_id, :territory_id], unique: true
 
     create_table :shippers do |t|
       t.string :company_name, limit: 40, null: false
@@ -101,25 +101,25 @@ class SetupDatabase < ActiveRecord::Migration[5.1]
       t.string :ship_country, limit: 15
     end
 
-    create_table :order_details, id: false do |t|
+    create_table :order_details do |t|
       t.references :product, null: false
       t.references :order, null: false
       t.integer :unit_price, null: false
       t.integer :quantity, null: false, limit: 2
       t.decimal :discount, null: false
     end
-    execute "ALTER TABLE order_details ADD PRIMARY KEY (product_id, order_id);"
+    add_index :order_details, [:product_id, :order_id], unique: true
 
     create_table :customer_demographics, id: false do |t|
       t.primary_key :customer_type_id
       t.text :customer_description
     end
 
-    create_table :customer_customer_demos, id: false do |t|
+    create_table :customer_customer_demos do |t|
       t.references :customer, null: false
       t.references :customer_type, null: false
     end
-    execute "ALTER TABLE customer_customer_demos ADD PRIMARY KEY (customer_id, customer_type_id);"
+    add_index :customer_customer_demos, [:customer_id, :customer_type_id], unique: true, name: "index_cust_cust_demos_cust_id_cust_type_id"
 
     add_foreign_key :orders, :shippers, column: :ship_via
     add_foreign_key :employees, :employees, column: :reports_to

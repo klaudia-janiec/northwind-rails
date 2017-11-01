@@ -21,9 +21,10 @@ ActiveRecord::Schema.define(version: 20171010155825) do
     t.binary "picture"
   end
 
-  create_table "customer_customer_demos", primary_key: ["customer_id", "customer_type_id"], force: :cascade do |t|
+  create_table "customer_customer_demos", force: :cascade do |t|
     t.bigint "customer_id", null: false
     t.bigint "customer_type_id", null: false
+    t.index ["customer_id", "customer_type_id"], name: "index_cust_cust_demos_cust_id_cust_type_id", unique: true
     t.index ["customer_id"], name: "index_customer_customer_demos_on_customer_id"
     t.index ["customer_type_id"], name: "index_customer_customer_demos_on_customer_type_id"
   end
@@ -45,9 +46,10 @@ ActiveRecord::Schema.define(version: 20171010155825) do
     t.string "fax", limit: 24
   end
 
-  create_table "employee_territories", primary_key: ["employee_id", "territory_id"], force: :cascade do |t|
+  create_table "employee_territories", force: :cascade do |t|
     t.bigint "employee_id", null: false
     t.bigint "territory_id", null: false
+    t.index ["employee_id", "territory_id"], name: "index_employee_territories_on_employee_id_and_territory_id", unique: true
     t.index ["employee_id"], name: "index_employee_territories_on_employee_id"
     t.index ["territory_id"], name: "index_employee_territories_on_territory_id"
   end
@@ -73,13 +75,14 @@ ActiveRecord::Schema.define(version: 20171010155825) do
     t.index ["reports_to"], name: "index_employees_on_reports_to"
   end
 
-  create_table "order_details", primary_key: ["product_id", "order_id"], force: :cascade do |t|
+  create_table "order_details", force: :cascade do |t|
     t.bigint "product_id", null: false
     t.bigint "order_id", null: false
     t.integer "unit_price", null: false
     t.integer "quantity", limit: 2, null: false
     t.decimal "discount", null: false
     t.index ["order_id"], name: "index_order_details_on_order_id"
+    t.index ["product_id", "order_id"], name: "index_order_details_on_product_id_and_order_id", unique: true
     t.index ["product_id"], name: "index_order_details_on_product_id"
   end
 
