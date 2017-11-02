@@ -7,6 +7,6 @@ class Order < ApplicationRecord
 
   validates :ship_name, length: { maximum: 40 }
   validates :ship_address, length: { maximum: 60 }
-  validates :ship_city, :ship_country, :ship_country, length: { maximum: 15 }
+  validates :ship_city, :ship_country, :ship_region, length: { maximum: 15 }
   validates :ship_postal_code, length: { maximum: 10 }
 end

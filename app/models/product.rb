@@ -7,5 +7,5 @@ class Product < ApplicationRecord
   validates :product_name, presence: true, length: { maximum: 40 }
   validates :discountinued, presence: true
   validates :quantity_per_unit, length: { maximum: 20 }
-  validates :units_in_stock, :units_on_order, :reorder_level, length: { maximum: 2 }
+  validates :units_in_stock, :units_on_order, :reorder_level, numericality: { less_than_or_equal_to: 32767, greater_than: 0 }
 end

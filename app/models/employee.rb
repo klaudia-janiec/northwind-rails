@@ -6,8 +6,8 @@ class Employee < ApplicationRecord
   has_many :territories, through: :employee_territories
 
   validates :first_name, :last_name, presence: true
-  validates :first_name, length: { maximum: 20 }
-  validates :last_name, length: { maximum: 10 }
+  validates :first_name, length: { maximum: 10 }
+  validates :last_name, length: { maximum: 20 }
   validates :title, length: { maximum: 30 }
   validates :title_of_courtesy, length: { maximum: 25 }
   validates :address, length: { maximum: 60 }

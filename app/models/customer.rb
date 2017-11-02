@@ -1,6 +1,6 @@
 class Customer < ApplicationRecord
-  has_many :customer_customer_demos
-  has_many :customer_demographics, through: :customer_customer_demos
+  has_many :customer_customer_demos, autosave: true, inverse_of: :customer
+  has_many :customer_demographics, through: :customer_customer_demos, source: :customer_type
   has_many :orders
 
   validates :company_name, presence: true, length: { maximum: 40 }
