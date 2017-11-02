@@ -1,4 +1,9 @@
 Fabricator(:order) do
+  before_save do |order|
+    order.order_date = rand(1.year).seconds.ago
+    order.required_date = order.order_date + rand(1.month).seconds
+    order.shipped_date = order.order_date + rand(1.month).seconds
+  end
   ship_name { FFaker::Company.name[0,39] }
   ship_address { FFaker::Address.street_address[0,59] }
   ship_city { FFaker::Address.city[0,14] }
