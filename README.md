@@ -1,21 +1,57 @@
 # README
 
-For Ubuntu:
-1. Install Postgres.  
+## Project setup using Ubuntu
+
+### Setup PostgreSQL
+
+1. Install Postgres  
   `$ sudo apt-get update`  
-	`$ sudo apt-get install postgresql postgresql-contrib libpq-dev`
+  `$ sudo apt-get install postgresql postgresql-contrib libpq-dev`  
 
 2. Create database user  
   `$ sudo -u postgres createuser -s pguser`  
-  `$ sudo -u postgres psql`
 
 3. Set database user password  
+  `$ sudo -u postgres psql`  
   `postgres=# \password pguser`  
-  `postgres=# \q`
+  `postgres=# \q`  
 
-4. Copy `.env.example` to `.env`.
+### Setup ruby  
 
-5. Add database user password to .env as `DATABASE_PASSWORD`.
+1. Install `rbenv` using this [guide](https://github.com/rbenv/rbenv/blob/master/README.md)  
 
-6. Create database  
-  `$ bin/rails db:create`
+2. Install `ruby-build` using this [guide](https://github.com/rbenv/ruby-build/blob/master/README.md)  
+
+3. Install ruby and bundler  
+  `$ rbenv install 2.4.2`  
+
+### Setup project
+
+**_Attention_**:
+  *JavaScript runtime is needed to run app, e.g. NodeJS (`apt-get install nodejs`)  
+  For other supported runtimes see https://github.com/rails/execjs*  
+  
+Go to directory where you have cloned the repository.  
+
+1. Prepare `.env` configuration file  
+  `$ cp .env.example .env`
+
+2. Add `.env` with data:  
+
+   ```
+   RAILS_MAX_THREADS = 1
+   DATABASE_HOST = localhost
+   DATABASE_USER = pguser
+   DATABASE_PASSWORD = YOUR_PASSWORD
+   ```
+
+3. Install required gems  
+  `$ gem install bundler`  
+  `$ bundle install`  
+
+4. Create database  
+
+  `$ bin/rails db:create`  
+
+   In case `PG::Error: ERROR:  new encoding (UTF8) is incompatible with the encoding of the template database (SQL_ASCII)` error, follow the [instructions](https://stackoverflow.com/a/16737776/2867427)  
+
