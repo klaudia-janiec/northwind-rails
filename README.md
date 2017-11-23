@@ -30,7 +30,7 @@
 **_Attention_**:
   *JavaScript runtime is needed to run app, e.g. NodeJS (`apt-get install nodejs`)  
   For other supported runtimes see https://github.com/rails/execjs*  
-  
+
 Go to directory where you have cloned the repository.  
 
 1. Prepare `.env` configuration file  
@@ -47,7 +47,7 @@ Go to directory where you have cloned the repository.
 
 3. Install required gems  
   `$ gem install bundler`  
-  `$ bundle install`  
+  `$ bundle install`
 
 4. Create database  
 
@@ -55,3 +55,15 @@ Go to directory where you have cloned the repository.
 
    In case `PG::Error: ERROR:  new encoding (UTF8) is incompatible with the encoding of the template database (SQL_ASCII)` error, follow the [instructions](https://stackoverflow.com/a/16737776/2867427)  
 
+5. Migrate database
+  `$ bin/rails db:migrate`
+
+6. Seed database
+  `$ bin/rails db:seed`
+
+7. Drop, create, migrate and seed database
+  `$ bin/rails db:drop db:create db:migrate db:seed`
+
+8. Get records from database (in example get records which have association with shipper, customer, employee)
+  `$ bin/rails console` or `$ bin/rails c`
+  `irb(main):001:0> Order.where.not(ship_via: nil, customer_id: nil, employee_id: nil)`
