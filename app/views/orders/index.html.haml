@@ -83,3 +83,8 @@
                 = order.employee.address + ", " + order.employee.region + ", " + order.employee.postal_code + " " + order.employee.city
                 %br
                 = order.employee.country
+          %tr
+            %td{ colspan: 2, class: "text-center" }
+              %a{ href: order_path(order) }
+                %button{ class: "btn btn-info" }
+                  Show
