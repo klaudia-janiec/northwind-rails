@@ -1,0 +1,85 @@
+%div{ class: "container" }
+  %h1
+    Orders
+  - @orders.each do |order|
+    %div{ class: "row" }
+      %div{ class: "col-xl" }
+        %table{ class: "table table-striped" }
+          %tr
+            %th{ class: "col-md-3" }
+              ID
+            %td
+              = order.id
+          %tr
+            %th
+              Products
+            %td
+              %ul{ class: "list-group" }
+                %li{ class: "list-group-item" }
+                  - order.order_details.each do |order_detail|
+                    %h4
+                      = order_detail.product.product_name
+                    %br
+                    = "Unit price: $" + order_detail.unit_price.to_s
+                    %br
+                    = "Quantity: " + order_detail.quantity.to_s
+                    %br
+                    = "Discount: " + order_detail.discount.to_i.to_s + "%"
+          %tr
+            %th
+              Order date
+            %td
+              = order.order_date
+          %tr
+            %th
+              Required date
+            %td
+              = order.required_date
+          %tr
+            %th
+              Shipped date
+            %td
+              = order.shipped_date
+          %tr
+            %th
+              Shipper
+            %td
+              - if order.shipper
+                = order.shipper.company_name + " " + order.shipper.phone
+          %tr
+            %th
+              Shipping details
+            %td
+              = order.ship_name
+              %br
+              = order.ship_address
+              %br
+              = order.ship_region + ", " + order.ship_postal_code + " " + order.ship_city
+              %br
+              = order.ship_country
+          %tr
+            %th
+              Customer
+            %td
+              - if order.customer
+                = order.customer.company_name
+                %br
+                = order.customer.address
+                %br
+                = order.customer.region + ", " + order.customer.postal_code + " " + order.customer.city
+                %br
+                = order.customer.country
+                %br
+                = "Phone: " + order.customer.phone + ", fax: " + order.customer.fax
+          %tr
+            %th
+              Employee
+            %td
+              - if order.employee
+                = order.employee.first_name + " " + order.employee.last_name
+                %br
+                = order.employee.home_phone
+                %br
+                = order.employee.address + ", " + order.employee.region + ", " + order.employee.postal_code + " " + order.employee.city
+                %br
+                = order.employee.country
