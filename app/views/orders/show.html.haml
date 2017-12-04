@@ -79,6 +79,5 @@
               = @order.employee.country
         %tr
           %td{ colspan: 2, class: "text-center" }
-            %a{ href: orders_path }
-              %button{ class: "btn btn-info" }
-                Show all
+            = link_to "Delete", @order, method: :delete, class: 'btn btn-danger'
+            = link_to "Show all", orders_path, class: "btn btn-info"

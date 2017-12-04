@@ -1,4 +1,7 @@
 %div{ class: "container" }
+  - flash.each do |error|
+    %div
+      = error
   %h1
     Orders
   - @orders.each do |order|
@@ -85,6 +88,5 @@
                 = order.employee.country
           %tr
             %td{ colspan: 2, class: "text-center" }
-              %a{ href: order_path(order) }
-                %button{ class: "btn btn-info" }
-                  Show
+              = link_to "Show", order, class: "btn btn-info"
+              = link_to "Delete", order, method: :delete, class: 'btn btn-danger'
