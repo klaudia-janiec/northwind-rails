@@ -5,3 +5,66 @@
 td {
   padding: 5px;
 }
+
+input, select, textarea {
+  width: 300px;
+  display: block;
+  direction: ltr;
+
+  -ms-box-sizing:content-box;
+  -moz-box-sizing:content-box;
+  box-sizing:content-box;
+  -webkit-box-sizing:content-box;
+}
+
+label {
+  margin-right: 5px;
+}
+
+form {
+  margin-bottom: 50px;
+}
+
+ul {
+  padding-left: 0;
+}
+
+legend {
+  margin-top: 10px;
+  color: #062351;
+}
+
+.warning {
+  border-style: solid;
+  border-color: #f99d9d;
+  border-radius: 10px;
+  padding: 10px;
+  display: inline-block;
+  margin-top: 50px;
+  text-align: center;
+  background-color: #fcbaba;
+  color: #8e0101;
+  line-height: 1.8;
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
+.bottom-margin {
+  margin-bottom: 10px;
+}
+
+#order-details {
+  background-color: #dce6e8;
+  padding: 10px;
+  border-radius: 15px;
+  display: inline-block;
+  box-shadow: 5px 5px 3px #062351;
+}
+
+.justify {
+  text-align: justify;
+}
+
+.submit {
+  font-size: 1.5em;
+}

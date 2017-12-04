@@ -13,6 +13,8 @@ gem 'jbuilder', '~> 2.5'
 gem 'haml'
 gem 'bootstrap-sass'
 gem 'jquery-rails'
+gem 'simple_form'
+gem 'cocoon'
 
 gem "dotenv-rails"
 

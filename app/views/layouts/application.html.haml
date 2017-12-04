@@ -1,0 +1,17 @@
+!!! 5
+%html
+  %head
+    %title
+      NorthwindRails
+    = csrf_meta_tags
+
+    = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload'
+    = javascript_include_tag 'application', 'data-turbolinks-track': 'reload'
+
+  %body
+    -if flash[:error]&.any?
+      %div{ class: "col-xs-4 col-xs-offset-4 warning" }
+        - flash[:error].each do |error|
+          %div
+            = error
+    = yield

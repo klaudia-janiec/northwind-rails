@@ -9,8 +9,8 @@
             Products
           %td
             %ul{ class: "list-group" }
-              %li{ class: "list-group-item" }
-                - @order.order_details.each do |order_detail|
+              - @order.order_details.each do |order_detail|
+                %li{ class: "list-group-item" }
                   %h4
                     = order_detail.product.product_name
                   %br
@@ -39,44 +39,49 @@
             Shipper
           %td
             - if @order.shipper
-              = @order.shipper.company_name + " " + @order.shipper.phone
+              Name:
+              = @order.shipper.company_name
+              %br
+              Phone:
+              = @order.shipper.phone
         %tr
           %th
             Shipping details
           %td
+            Name:
             = @order.ship_name
             %br
-            = @order.ship_address
-            %br
-            = @order.ship_region + ", " + @order.ship_postal_code + " " + @order.ship_city
-            %br
-            = @order.ship_country
+            Address:
+            = @order.ship_address + ", " + @order.ship_postal_code + " " + @order.ship_city + ", " + @order.ship_region + ", " + @order.ship_country
         %tr
           %th
             Customer
           %td
             - if @order.customer
+              Name:
               = @order.customer.company_name
               %br
-              = @order.customer.address
+              Address:
+              = @order.customer.address + ", " + @order.customer.postal_code + " " + @order.customer.city + ", " + @order.customer.region + " " + @order.customer.country
               %br
-              = @order.customer.region + ", " + @order.customer.postal_code + " " + @order.customer.city
+              Phone:
+              = @order.customer.phone
               %br
-              = @order.customer.country
-              %br
-              = "Phone: " + @order.customer.phone + ", fax: " + @order.customer.fax
+              Fax:
+              = @order.customer.fax
         %tr
           %th
             Employee
           %td
             - if @order.employee
+              Name:
               = @order.employee.first_name + " " + @order.employee.last_name
               %br
+              Phone:
               = @order.employee.home_phone
               %br
-              = @order.employee.address + ", " + @order.employee.region + ", " + @order.employee.postal_code + " " + @order.employee.city
-              %br
-              = @order.employee.country
+              Address:
+              = @order.employee.address + ", " + @order.employee.postal_code + " " + @order.employee.city + ", " + @order.employee.region + ", " + @order.employee.country
         %tr
           %td{ colspan: 2, class: "text-center" }
             = link_to "Delete", @order, method: :delete, class: 'btn btn-danger'
