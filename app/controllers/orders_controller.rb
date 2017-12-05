@@ -1,5 +1,7 @@
 class OrdersController < ApplicationController
-  before_action :order, only: %i[show destroy]
+  before_action :set_order, only: %i[show destroy update edit]
+  before_action :set_associations, only: %i[new edit]
+
   def index
     @orders = Order.includes(:customer, :employee, :shipper, order_details: :product).order(:id).all
   end
@@ -7,19 +9,12 @@ class OrdersController < ApplicationController
   def show; end
 
   def new
-    @shippers = Shipper.order(:id).all
-    @customers = Customer.order(:id).all
-    @employees = Employee.order(:id).all
-    @products = Product.order(:id).all
     @order = Order.new
   end
 
   def create
     @order = Order.new(order_date: Time.zone.today)
     @order.assign_attributes(permitted_attributes)
-    @order.order_details.each do |order_detail|
-      order_detail.unit_price = order_detail.product&.unit_price
-    end
 
     if @order.save
       redirect_to order_path(@order)
@@ -29,11 +24,24 @@ class OrdersController < ApplicationController
     end
   end
 
+  def edit; end
+
+  def update
+    @order.assign_attributes(permitted_attributes)
+
+    if @order.save
+      redirect_to order_path(@order)
+    else
+      redirect_to @order
+      flash[:error] = @order.errors.full_messages
+    end
+  end
+
   def destroy
-    if order.destroy
+    if @order.destroy
       redirect_to root_url
     else
-      flash[:error] = order.errors.full_messages
+      flash[:error] = @order.errors.full_messages
     end
   end
 
@@ -52,10 +60,17 @@ class OrdersController < ApplicationController
                                   :ship_region,
                                   :ship_postal_code,
                                   :ship_country,
-                                  order_details_attributes: [:product_id, :quantity, :discount])
+                                  order_details_attributes: [:id, :product_id, :quantity, :discount, :_destroy])
   end
 
-  def order
+  def set_order
     @order = Order.find(params[:id])
+  end
+
+  def set_associations
+    @shippers = Shipper.order(:id).all
+    @customers = Customer.order(:id).all
+    @employees = Employee.order(:id).all
+    @products = Product.order(:id).all
   end
 end

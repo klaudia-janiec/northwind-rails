@@ -84,5 +84,6 @@
               = @order.employee.address + ", " + @order.employee.postal_code + " " + @order.employee.city + ", " + @order.employee.region + ", " + @order.employee.country
         %tr
           %td{ colspan: 2, class: "text-center" }
+            = link_to "Update", edit_order_path(@order), class: "btn btn-warning"
             = link_to "Delete", @order, method: :delete, class: 'btn btn-danger'
             = link_to "Show all", orders_path, class: "btn btn-info"

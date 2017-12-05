@@ -1,6 +1,7 @@
 Fabricator(:product) do
   supplier
   category
+  unit_price { Random(1..2000) }
   product_name { FFaker::Product.product_name[0,39] }
   quantity_per_unit { "#{Random.rand(1..100)} #{FFaker::UnitMetric.mass_abbr}" }
   units_in_stock { Random.rand(1..32767) }
