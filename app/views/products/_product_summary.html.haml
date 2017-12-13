@@ -1,0 +1,10 @@
+%tr
+  %td{ class: "col-md-3" }
+    = product.id
+  %td
+    %h4
+      = product.product_name
+  %td{ colspan: 2, class: "text-center", style: "text-align: right"}
+    = link_to "Show", product, class: "btn btn-info"
+    = link_to "Update", edit_product_path(product), class: "btn btn-warning"
+    = link_to "Delete", product, method: :delete, class: 'btn btn-danger'

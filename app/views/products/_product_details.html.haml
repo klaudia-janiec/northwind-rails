@@ -1,0 +1,56 @@
+%tr
+  %th
+    Product
+  %td
+    %h4
+      = product.product_name
+
+%tr
+  %th
+    Category
+  %td
+    - if product.category
+      = product.category.category_name
+      ( id:
+      = product.category.id
+      )
+
+%tr
+  %th
+    Supplier
+  %td
+    - if product.supplier
+      = product.supplier.company_name
+      ( id:
+      = product.supplier.id
+      )
+
+%tr
+  %th
+    Quantity per product
+  %td
+    = product.quantity_per_unit
+
+%tr
+  %th
+    Unit Price
+  %td
+    = product.unit_price
+
+%tr
+  %th
+    Units in stock
+  %td
+    = product.units_in_stock
+
+%tr
+  %th
+    Reordered level
+  %td
+    = product.reorder_level
+
+%tr
+  %th
+    Discountinued
+  %td
+    = product.discountinued

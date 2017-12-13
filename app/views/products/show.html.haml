@@ -1,0 +1,12 @@
+%div{ class: "container" }
+  %div{ class: "row" }
+    %div{ class: "col-xl" }
+      %h1
+        = "Product ##{@product.id}"
+      %table{ class: "table table-striped" }
+        = render "product_details", product: @product
+        %tr
+          %td{ colspan: 2, class: "text-center" }
+            = link_to "Update", edit_product_path(@product), class: "btn btn-warning"
+            = link_to "Delete", @product, method: :delete, class: 'btn btn-danger'
+            = link_to "Show all", products_path, class: "btn btn-info"

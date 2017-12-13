@@ -1,16 +1,12 @@
 class ProductsController < ApplicationController
-  before_action :set_product, only: [:show, :edit, :update, :destroy]
+  before_action :set_product, only: %i[show destroy update edit]
+  before_action :set_associations, only: %i[new edit]
 
-  # GET /products
-  # GET /products.json
   def index
-    @products = Product.all
+    @products = Product.includes(:supplier, :category).order(:id).all
   end
 
-  # GET /products/1
-  # GET /products/1.json
-  def show
-  end
+  def show; end
 
   # GET /products/new
   def new
@@ -71,4 +67,9 @@ class ProductsController < ApplicationController
     def product_params
       params.fetch(:product, {})
     end
+
+  def set_associations
+    @suppliers = Supplier.order(:id).all
+    @categories = Category.order(:id).all
+  end
 end
