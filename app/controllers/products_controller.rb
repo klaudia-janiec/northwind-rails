@@ -8,65 +8,61 @@ class ProductsController < ApplicationController
 
   def show; end
 
-  # GET /products/new
   def new
     @product = Product.new
   end
 
-  # GET /products/1/edit
-  def edit
-  end
-
-  # POST /products
-  # POST /products.json
   def create
-    @product = Product.new(product_params)
+    @product = Product.new
+    @product.assign_attributes(permitted_attributes)
+    @product.assign_attributes(units_on_order: 0)
 
-    respond_to do |format|
-      if @product.save
-        format.html { redirect_to @product, notice: 'Product was successfully created.' }
-        format.json { render :show, status: :created, location: @product }
-      else
-        format.html { render :new }
-        format.json { render json: @product.errors, status: :unprocessable_entity }
-      end
+    if @product.save
+      redirect_to product_path(@product)
+    else
+      redirect_to new_product_path
+      flash[:error] = @product.errors.full_messages
     end
   end
 
-  # PATCH/PUT /products/1
-  # PATCH/PUT /products/1.json
+  def edit; end
+
   def update
-    respond_to do |format|
-      if @product.update(product_params)
-        format.html { redirect_to @product, notice: 'Product was successfully updated.' }
-        format.json { render :show, status: :ok, location: @product }
-      else
-        format.html { render :edit }
-        format.json { render json: @product.errors, status: :unprocessable_entity }
-      end
+    @product.assign_attributes(permitted_attributes)
+
+    if @product.save
+      redirect_to product_path(@product)
+    else
+      redirect_to @product
+      flash[:error] = @product.errors.full_messages
     end
   end
 
-  # DELETE /products/1
-  # DELETE /products/1.json
   def destroy
-    @product.destroy
-    respond_to do |format|
-      format.html { redirect_to products_url, notice: 'Product was successfully destroyed.' }
-      format.json { head :no_content }
+    if @product.destroy
+      redirect_to products_path
+    else
+      flash[:error] = @product.errors.full_messages
     end
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_product
-      @product = Product.find(params[:id])
-    end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def product_params
-      params.fetch(:product, {})
-    end
+  def permitted_attributes
+    params.require(:product).permit(
+        :product_name,
+        :quantity_per_unit,
+        :unit_price,
+        :units_on_order,
+        :units_in_stock,
+        :reorder_level,
+        :discountinued
+    )
+  end
+
+  def set_product
+    @product = Product.find(params[:id])
+  end
 
   def set_associations
     @suppliers = Supplier.order(:id).all

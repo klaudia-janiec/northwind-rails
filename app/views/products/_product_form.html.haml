@@ -1,0 +1,16 @@
+%div{ class: "container" }
+  %div{ class: "row" }
+    %div{ class: "col-xs-4 col-xs-offset-4" }
+      %h1{ class: "justify" }
+        = title
+      = simple_form_for product do |f|
+        = f.input :product_name
+        = f.input :category_id, collection: @categories, label_method: lambda { |category| "##{category.id} #{category.category_name}" },:value_method => :id, :label => "Category"
+        = f.input :supplier_id, collection: @suppliers,  label_method: lambda { |supplier| "##{supplier.id} #{supplier.company_name}" }, :value_method => :id, :label => "Supplier"
+        = f.input :quantity_per_unit
+        = f.input :unit_price
+        = f.input :units_in_stock
+        = f.input :reorder_level
+        = f.input :discountinued
+        %br
+        = f.button :submit, "Submit", class: "btn btn-info submit"
