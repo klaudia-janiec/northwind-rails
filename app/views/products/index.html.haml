@@ -1,0 +1,12 @@
+%div{ class: "container" }
+  %div{ class: "text-center bottom-margin" }
+    %h1
+      Products
+    = link_to "Add new product", new_product_path, class: "btn btn-success"
+
+  - @products.each do |product|
+    %div{ class: "row" }
+      %div{ class: "col-xl" }
+        %table{ class: "table table-striped" }
+          = render "product_summary", product: product
+
