@@ -53,7 +53,6 @@ class ProductsController < ApplicationController
         :product_name,
         :quantity_per_unit,
         :unit_price,
-        :units_on_order,
         :units_in_stock,
         :reorder_level,
         :discountinued
