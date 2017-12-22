@@ -1,74 +1,44 @@
 class ReportsController < ApplicationController
-  before_action :set_report, only: [:show, :edit, :update, :destroy]
 
-  # GET /reports
-  # GET /reports.json
-  def index
-    @reports = Report.all
+
+  def index;
+    @categories = Category.order(:id).all
   end
 
-  # GET /reports/1
-  # GET /reports/1.json
-  def show
+  def create;
+    @report = params["report"]
+    @start_date = @report["start_date"]
+    @end_date = @report["end_date"]
+    @category = @report["category"]
+
+    # http://www.sqlfiddle.com/#!17/a45cb/12
+    @customers = Customer.joins("
+      LEFT OUTER JOIN (
+        SELECT orders.customer_id
+        FROM orders JOIN order_details
+          ON orders.id = order_details.order_id
+          AND orders.order_date BETWEEN '#{@start_date}' AND '#{@end_date}'
+        JOIN products
+          ON order_details.product_id = products.id
+        JOIN categories
+          ON products.category_id = categories.id
+          AND categories.category_name LIKE '#{@category}'
+        ) AS orders_query
+      ON
+        customers.id = orders_query.customer_id
+      WHERE orders_query.customer_id is NULL"
+    )
+
+    # The same as above I've tried with Hash syntax, but with no success.
+    # time_range = @start_date..@end_date
+    # @customers = Customer.left_outer_joins(
+    #     Order.joins(order_details: [{product: :category}])
+    #          .where(orders: {order_date: time_range}, categories: {id: @category_id})
+    # )
+
+    @title = "Lista klientów, którzy nie złożyli żadnego zamówienia na produkt z kategorii '#{@category}'
+              w okresie od #{@start_date} do #{@end_date}."
+
   end
 
-  # GET /reports/new
-  def new
-    @report = Report.new
-  end
-
-  # GET /reports/1/edit
-  def edit
-  end
-
-  # POST /reports
-  # POST /reports.json
-  def create
-    @report = Report.new(report_params)
-
-    respond_to do |format|
-      if @report.save
-        format.html { redirect_to @report, notice: 'Report was successfully created.' }
-        format.json { render :show, status: :created, location: @report }
-      else
-        format.html { render :new }
-        format.json { render json: @report.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  # PATCH/PUT /reports/1
-  # PATCH/PUT /reports/1.json
-  def update
-    respond_to do |format|
-      if @report.update(report_params)
-        format.html { redirect_to @report, notice: 'Report was successfully updated.' }
-        format.json { render :show, status: :ok, location: @report }
-      else
-        format.html { render :edit }
-        format.json { render json: @report.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  # DELETE /reports/1
-  # DELETE /reports/1.json
-  def destroy
-    @report.destroy
-    respond_to do |format|
-      format.html { redirect_to reports_url, notice: 'Report was successfully destroyed.' }
-      format.json { head :no_content }
-    end
-  end
-
-  private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_report
-      @report = Report.find(params[:id])
-    end
-
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def report_params
-      params.fetch(:report, {})
-    end
 end
