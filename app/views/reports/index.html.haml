@@ -1,11 +1,14 @@
 %div{ class: "container" }
+  %div{ class: "text-right bottom-margin" }
+    = link_to "Back to Main page", "main#index", class: "btn btn-primary"
+
   %div{ class: "text-center bottom-margin" }
     %h1
       Raporty
     %div{ class: "text-left bottom-margin" }
-      %h4
+      %h3
         1. Lista klientów, którzy nie złożyli żadnego zamówienia
-      %h5
+      %h4
         Parametry raportu:
         = simple_form_for :report do |form|
           %div{ class: "row" }
@@ -42,4 +45,5 @@
                      include_blank: false,
                      label: false
 
-          = form.button :submit, "Generate", class: "btn btn-info submit"
+          %div{ class: "text-right" }
+            = form.button :submit, "Generate", class: "btn btn-info submit"

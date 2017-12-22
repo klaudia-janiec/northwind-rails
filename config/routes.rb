@@ -1,7 +1,8 @@
 Rails.application.routes.draw do
-  root "orders#index"
+  root "main#index"
+  resources :main
   resources :orders
   resources :products
   resources :reports
-  match "*path", to: "orders#index", via: :all
+  match "*path", to: "main#index", via: :all
 end
