@@ -5,7 +5,7 @@
     = link_to "Back to all reports", reports_path, class: "btn btn-info"
   %div{ class: "text-center bottom-margin" }
     %h4
-      = @title
+      ="Lista klientów, którzy nie złożyli żadnego zamówienia na produkt z kategorii '#{@parameters[:category]}' w okresie od #{@parameters[:start_date]} do #{@parameters[:end_date]}."
     - @customers.each do |customer|
       %div{ class: "row" }
         %div{ class: "col-xl" }
