@@ -4,6 +4,7 @@ Fabricator(:order) do
     order.required_date = order.order_date + rand(1.month).seconds
     order.shipped_date = order.order_date + rand(1.month).seconds
   end
+  freight { Random.rand(0...100) }
   ship_name { FFaker::Company.name[0,39] }
   ship_address { FFaker::Address.street_address[0,59] }
   ship_city { FFaker::Address.city[0,14] }

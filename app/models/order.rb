@@ -11,4 +11,30 @@ class Order < ApplicationRecord
   validates :ship_postal_code, length: { maximum: 10 }
 
   accepts_nested_attributes_for :order_details, reject_if: :all_blank, allow_destroy: true
+
+  scope :with_total_price, -> { select([orders[Arel.star]], total_price_query).joins(:order_details).group(:id) }
+
+  private
+
+  class << self
+    def total_price_query
+      Arel::Nodes::Addition.new(subtotal, orders[:freight]).as("total_price")
+    end
+
+    def subtotal
+      Arel::Nodes::Multiplication.new(order_details[:unit_price], Arel::Nodes::Multiplication.new(order_details[:quantity], discount)).sum
+    end
+
+    def discount
+      Arel::Nodes::Grouping.new(Arel::Nodes::Subtraction.new(1, order_details[:discount]))
+    end
+
+    def order_details
+      @order_details ||= OrderDetail.arel_table
+    end
+
+    def orders
+      @orders ||= Order.arel_table
+    end
+  end
 end

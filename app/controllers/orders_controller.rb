@@ -1,12 +1,14 @@
 class OrdersController < ApplicationController
-  before_action :set_order, only: %i[show destroy update edit]
+  before_action :set_order, only: %i[destroy update edit]
   before_action :set_associations, only: %i[new edit]
 
   def index
-    @orders = Order.includes(:customer, :employee, :shipper, order_details: :product).order(:id).all
+    @orders = Order.with_total_price.includes(:customer, :employee, :shipper, order_details: :product).order(:id).all
   end
 
-  def show; end
+  def show
+    @order = Order.with_total_price.find(params[:id])
+  end
 
   def new
     @order = Order.new

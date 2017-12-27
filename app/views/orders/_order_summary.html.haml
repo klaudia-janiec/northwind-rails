@@ -12,7 +12,11 @@
           %br
           = "Quantity: " + order_detail.quantity.to_s
           %br
-          = "Discount: " + order_detail.discount.to_i.to_s + "%"
+          = "Discount: " + (order_detail.discount * 100).to_i.to_s + "%"
+    %h4
+      Total price
+    %p
+      = "$" + order.total_price.round(2).to_s
 %tr
   %th
     Order date
