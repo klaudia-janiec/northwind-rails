@@ -1,10 +1,10 @@
 class CustomersWithoutOrders
   attr_reader :category, :start_date, :end_date
 
-  def initialize(start_date:, end_date:, category:)
-    @start_date = start_date
-    @end_date = end_date
-    @category = category
+  def initialize(parameters)
+    @start_date = parameters[:start_date]
+    @end_date = parameters[:end_date]
+    @category = parameters[:category]
   end
 
   def call

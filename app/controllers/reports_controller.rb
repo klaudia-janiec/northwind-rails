@@ -5,11 +5,7 @@ class ReportsController < ApplicationController
 
   def customers_without_orders
     set_parameters[:report]
-    report = CustomersWithoutOrders.new(
-        start_date: @parameters[:start_date],
-        end_date: @parameters[:end_date],
-        category: @parameters[:category])
-    @customers = report.call
+    @customers = CustomersWithoutOrders.new(@parameters).call
   end
 
   private
