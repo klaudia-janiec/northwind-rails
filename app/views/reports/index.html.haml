@@ -10,7 +10,7 @@
         1. Lista klientów, którzy nie złożyli żadnego zamówienia
       %h4
         Parametry raportu:
-        = simple_form_for :report do |form|
+        = simple_form_for :report, url: customers_without_orders_path, method: :get do |form|
           %div{ class: "row" }
             %div{ class: "col-xl" }
               %table{ class: "table table-striped" }

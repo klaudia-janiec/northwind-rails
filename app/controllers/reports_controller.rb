@@ -1,10 +1,9 @@
 class ReportsController < ApplicationController
-
-  def index;
+  def index
     @categories = Category.order(:id).all
   end
 
-  def create;
+  def customers_without_orders
     set_parameters[:report]
     report = CustomersWithoutOrders.new(
         start_date: @parameters[:start_date],
