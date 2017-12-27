@@ -4,7 +4,7 @@
       %h1
         = "Order ##{@order.id}"
       %table{ class: "table table-striped" }
-        = render "order_summary", order: @order
+        = render "order_detailed_summary", order: @order
         %tr
           %td{ colspan: 2, class: "text-center" }
             = link_to "Update", edit_order_path(@order), class: "btn btn-warning"

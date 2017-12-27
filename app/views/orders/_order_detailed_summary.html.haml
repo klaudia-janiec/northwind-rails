@@ -1,5 +1,11 @@
 %tr
   %th
+    Total price
+  %td
+    %h4
+      = "$" + order.total_price.round(2).to_s
+%tr
+  %th
     Products
   %td
     %ul{ class: "list-group" }
@@ -13,10 +19,11 @@
           = "Quantity: " + order_detail.quantity.to_s
           %br
           = "Discount: " + (order_detail.discount * 100).to_i.to_s + "%"
-    %h4
-      Total price
-    %p
-      = "$" + order.total_price.round(2).to_s
+%tr
+  %th
+    Freight
+  %td
+    = order.freight
 %tr
   %th
     Order date

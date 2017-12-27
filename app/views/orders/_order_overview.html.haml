@@ -1,0 +1,36 @@
+%tr
+  %th
+    Total price
+  %td
+    %h4
+      = "$" + order.total_price.round(2).to_s
+%tr
+  %th
+    Order date
+  %td
+    = order.order_date
+%tr
+  %th
+    Required date
+  %td
+    = order.required_date
+%tr
+  %th
+    Shipped date
+  %td
+    = order.shipped_date
+%tr
+  %th
+    Shipper
+  %td
+    = order.shipper.company_name if order.shipper
+%tr
+  %th
+    Customer
+  %td
+    = order.customer.company_name if order.customer
+%tr
+  %th
+    Employee
+  %td
+    = "#{order.employee.first_name} #{order.employee.last_name}" if order.employee
