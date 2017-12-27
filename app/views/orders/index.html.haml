@@ -2,6 +2,13 @@
   %div{ class: "text-right bottom-margin" }
     = link_to "Back to Main page", "main#index", class: "btn btn-primary"
 
+  = render "order_filter_form",
+    shippers: @shippers,
+    customers: @customers,
+    employees: @employees,
+    products: @products,
+    filter_params: @filter_params
+
   %div{ class: "text-center bottom-margin" }
     %h1
       Orders

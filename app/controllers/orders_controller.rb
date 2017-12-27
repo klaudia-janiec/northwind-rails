@@ -1,9 +1,14 @@
 class OrdersController < ApplicationController
   before_action :set_order, only: %i[destroy update edit]
-  before_action :set_associations, only: %i[new edit]
+  before_action :set_associations, only: %i[index new edit]
 
   def index
-    @orders = Order.with_total_price.includes(:customer, :employee, :shipper, order_details: :product).order(:id).all
+    @orders = Order
+                .with_total_price
+                .includes(:customer, :employee, :shipper, order_details: :product)
+                .filter(filter_params)
+                .order(:id)
+                .all
   end
 
   def show
@@ -63,6 +68,10 @@ class OrdersController < ApplicationController
                                   :ship_postal_code,
                                   :ship_country,
                                   order_details_attributes: [:id, :product_id, :quantity, :discount, :_destroy])
+  end
+
+  def filter_params
+    @filter_params ||= params[:filter]&.slice(:customer, :product, :shipper, :employee, :min_total_price, :max_total_price)
   end
 
   def set_order
