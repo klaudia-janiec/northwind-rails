@@ -1,5 +1,10 @@
 %div{ class: "nested-fields order-details" }
-  = f.input :product_id, collection: @products, label_method: lambda { |product| "##{product.id} #{product.product_name}" }, value_method: :id, label: "Product"
+  = f.input :product_id,
+    collection: @products,
+    label_method: lambda { |product| "##{product.id} #{product.product_name}" },
+    value_method: :id,
+    label: "Product",
+    input_html: { onchange: 'fillUnitPrice()' }
   = f.input :quantity, input_html: { min: 1 }
   = f.input :discount, input_html: { min: 0, max: 100 }
   = f.input :unit_price, disabled: true

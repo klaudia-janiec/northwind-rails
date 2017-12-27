@@ -6,7 +6,12 @@ class ProductsController < ApplicationController
     @products = Product.includes(:supplier, :category).order(:id).all
   end
 
-  def show; end
+  def show
+    respond_to do |format|
+      format.html
+      format.json { render json: @product }
+    end
+  end
 
   def new
     @product = Product.new
