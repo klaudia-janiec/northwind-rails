@@ -3,10 +3,9 @@
     collection: @products,
     label_method: lambda { |product| "##{product.id} #{product.product_name}" },
     value_method: :id,
-    label: "Product",
-    input_html: { onchange: 'fillUnitPrice()' }
+    label: "Product"
   = f.input :quantity, input_html: { min: 1 }
-  = f.input :discount, input_html: { min: 0, max: 100 }
+  = f.input :discount, input_html: { min: 0.0, max: 1.0 }
   = f.input :unit_price, disabled: true
   = f.hidden_field :_destroy
   = link_to_remove_association "Remove product", f, class: "btn btn-danger"

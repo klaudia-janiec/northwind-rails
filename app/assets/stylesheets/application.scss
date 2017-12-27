@@ -66,10 +66,14 @@ legend {
   text-align: justify;
 }
 
-.submit {
+.submit, #total_price {
   font-size: 1.5em;
 }
 
 .filter {
   width: auto;
+}
+
+#total_price {
+  text-align: right;
 }
