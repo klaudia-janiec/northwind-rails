@@ -4,9 +4,20 @@
       Products
     = link_to "Add new product", new_product_path, class: "btn btn-success"
 
-  - @products.each do |product|
-    %div{ class: "row" }
-      %div{ class: "col-xl" }
-        %table{ class: "table table-striped" }
+  %div{ class: "row" }
+    %div{ class: "col-xl" }
+      %table{ class: "table table-striped" }
+        %tr
+          %th
+            ID
+          %th
+            Product Name
+          %th
+            Category Name
+          %th
+            Supplier Company
+          %th{class: "text-center" }
+            Actions
+        - @products.each do |product|
           = render "product_summary", product: product
 
