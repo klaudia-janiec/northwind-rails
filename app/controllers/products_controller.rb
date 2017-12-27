@@ -4,6 +4,9 @@ class ProductsController < ApplicationController
 
   def index
     @products = Product.includes(:supplier, :category).order(:id).all
+    filter = ProductsFilter.new(@products, params["filter"])
+    @products = filter.apply
+    @categories = Category.all.order(:id)
   end
 
   def show; end
@@ -50,12 +53,12 @@ class ProductsController < ApplicationController
 
   def permitted_attributes
     params.require(:product).permit(
-        :product_name,
-        :quantity_per_unit,
-        :unit_price,
-        :units_in_stock,
-        :reorder_level,
-        :discountinued
+      :product_name,
+      :quantity_per_unit,
+      :unit_price,
+      :units_in_stock,
+      :reorder_level,
+      :discountinued
     )
   end
 

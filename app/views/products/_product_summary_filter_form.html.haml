@@ -1,0 +1,24 @@
+%h4
+  Filter products by:
+= simple_form_for :filter, url: products_path, method: :get do |f|
+  - f.input :method, :as => :hidden, :input_html => { :value => "some value" }
+  %table
+    %tr
+      %td
+        Name:
+        = f.input :product_name,
+          label: false
+      %td
+        Category:
+        = f.input :category_id,
+          collection: categories,
+          label_method: lambda { |category| "##{category.id} #{category.category_name}" },
+          value_method: :id,
+          include_blank: true,
+          label: false
+      %td{ colspan: 2}
+        = f.button :submit, "Filter", class: "btn btn-info submit btn-small"
+        -#= link_to "Filter with link_to",
+        -#  products_path(product_name: "XXX", category: "YYY"),
+        -#  class: "btn btn-info submit btn-small"
+        = link_to "Clean filters", products_path, class: "btn btn-warning submit btn-small"

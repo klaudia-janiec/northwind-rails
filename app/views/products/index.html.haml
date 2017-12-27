@@ -4,6 +4,9 @@
       Products
     = link_to "Add new product", new_product_path, class: "btn btn-success"
 
+  %div{ class: "text-left" }
+    = render "product_summary_filter_form", categories: @categories
+
   %div{ class: "row" }
     %div{ class: "col-xl" }
       %table{ class: "table table-striped" }
