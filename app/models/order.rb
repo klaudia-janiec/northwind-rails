@@ -11,6 +11,7 @@ class Order < ApplicationRecord
   validates :ship_address, length: { maximum: 60 }
   validates :ship_city, :ship_country, :ship_region, length: { maximum: 15 }
   validates :ship_postal_code, length: { maximum: 10 }
+  validates :freight, numericality: { greater_than_or_equal_to: 0 }
 
   accepts_nested_attributes_for :order_details, reject_if: :all_blank, allow_destroy: true
 
