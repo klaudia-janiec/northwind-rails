@@ -15,12 +15,12 @@ class Order < ApplicationRecord
 
   accepts_nested_attributes_for :order_details, reject_if: :all_blank, allow_destroy: true
 
-  scope :with_total_price, -> { select([orders[Arel.star]], total_price_query.as("total_price")).joins(:order_details).group(:id) }
+  scope :with_total_price, -> { select([orders[Arel.star]], total_price_query.as("total_price")).left_joins(:order_details).group(:id) }
 
   scope :customer, -> (customer_id) { where(customer_id: customer_id) }
   scope :employee, -> (employee_id) { where(employee_id: employee_id) }
   scope :shipper,  -> (shipper_id)  { where(ship_via: shipper_id) }
-  scope :product,  -> (product_id)  { joins(:order_details).where(order_details: { product_id: product_id }) }
+  scope :product,  -> (product_id)  { where(order_details: { product_id: product_id }) }
   scope :min_total_price, -> (min_total_price) { with_total_price.having(total_price_query.gteq(min_total_price)) }
   scope :max_total_price, -> (max_total_price) { with_total_price.having(total_price_query.lteq(max_total_price)) }
 
@@ -28,7 +28,11 @@ class Order < ApplicationRecord
 
   class << self
     def total_price_query
-      Arel::Nodes::Addition.new(subtotal, orders[:freight])
+      Arel::Nodes::Addition.new(val_or_zero(subtotal), val_or_zero(orders[:freight]))
+    end
+
+    def val_or_zero(value)
+      Arel::Nodes::NamedFunction.new('COALESCE', [value, 0])
     end
 
     def subtotal
