@@ -45,7 +45,7 @@
     = order.ship_name
     %br
     Address:
-    = order.ship_address + ", " + order.ship_postal_code + " " + order.ship_city + ", " + order.ship_region + ", " + order.ship_country
+    = [order.ship_address, order.ship_postal_code, order.ship_city, order.ship_region, order.ship_country].compact.join(", ")
 %tr
   %th
     Customer
@@ -55,7 +55,7 @@
       = order.customer.company_name
       %br
       Address:
-      = order.customer.address + ", " + order.customer.postal_code + " " + order.customer.city + ", " + order.customer.region + ", " + order.customer.country
+      = [order.customer.address, order.customer.postal_code, order.customer.city, order.customer.region, order.customer.country].compact.join(", ")
       %br
       Phone:
       = order.customer.phone
@@ -68,10 +68,10 @@
   %td
     - if order.employee
       Name:
-      = order.employee.first_name + " " + order.employee.last_name
+      = [order.employee.first_name, order.employee.last_name].join(" ")
       %br
       Phone:
       = order.employee.home_phone
       %br
       Address:
-      = order.employee.address + ", " + order.employee.postal_code + " " + order.employee.city + ", " + order.employee.region + ", " + order.employee.country
+      = [order.employee.address, order.employee.postal_code, order.employee.city,  order.employee.region, order.employee.country].compact.join(", ")
