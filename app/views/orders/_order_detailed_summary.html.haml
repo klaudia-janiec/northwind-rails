@@ -3,7 +3,7 @@
     Total price
   %td
     %h4
-      = "$" + order.total_price.round(2).to_s
+      = number_to_currency(order.total_price.round(2), precision: 2)
 %tr
   %th
     Products
@@ -56,7 +56,7 @@
     = order.ship_name
     %br
     Address:
-    = [order.ship_address, order.ship_postal_code, order.ship_city, order.ship_region, order.ship_country].compact.join(", ")
+    = "#{order.ship_address}, #{order.ship_postal_code} #{order.ship_city}, #{order.ship_region}, #{order.ship_country}"
 %tr
   %th
     Customer
@@ -66,7 +66,7 @@
       = order.customer.company_name
       %br
       Address:
-      = [order.customer.address, order.customer.postal_code, order.customer.city, order.customer.region, order.customer.country].compact.join(", ")
+      = "#{order.customer.address}, #{order.customer.postal_code} #{order.customer.city}, #{order.customer.region}, #{order.customer.country}"
       %br
       Phone:
       = order.customer.phone
@@ -85,4 +85,4 @@
       = order.employee.home_phone
       %br
       Address:
-      = [order.employee.address, order.employee.postal_code, order.employee.city,  order.employee.region, order.employee.country].compact.join(", ")
+      = "#{order.employee.address}, #{order.employee.postal_code} #{order.employee.city}, #{order.employee.region}, #{order.employee.country}"

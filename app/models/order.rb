@@ -32,7 +32,7 @@ class Order < ApplicationRecord
     end
 
     def val_or_zero(value)
-      Arel::Nodes::NamedFunction.new('COALESCE', [value, 0])
+      Arel::Nodes::NamedFunction.new('COALESCE', [Arel::Nodes::NamedFunction.new('ROUND', [value, 2]), 0])
     end
 
     def subtotal
