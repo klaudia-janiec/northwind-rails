@@ -1,9 +1,14 @@
 class OrdersController < ApplicationController
-  before_action :set_order, only: %i[show destroy update edit]
-  before_action :set_associations, only: %i[new edit]
+  before_action :set_order_with_total_price, only: %i[update edit show]
+  before_action :set_associations, only: %i[index new edit]
 
   def index
-    @orders = Order.includes(:customer, :employee, :shipper, order_details: :product).order(:id).all
+    @orders = Order
+                .with_total_price
+                .includes(:customer, :employee, :shipper, order_details: :product)
+                .filter(filter_params)
+                .order(:id)
+                .all
   end
 
   def show; end
@@ -38,6 +43,8 @@ class OrdersController < ApplicationController
   end
 
   def destroy
+    @order = Order.find(params[:id])
+
     if @order.destroy
       redirect_to root_url
     else
@@ -63,8 +70,12 @@ class OrdersController < ApplicationController
                                   order_details_attributes: [:id, :product_id, :quantity, :discount, :_destroy])
   end
 
-  def set_order
-    @order = Order.find(params[:id])
+  def filter_params
+    @filter_params ||= params[:filter]&.slice(:customer, :product, :shipper, :employee, :min_total_price, :max_total_price)
+  end
+
+  def set_order_with_total_price
+    @order = Order.with_total_price.find(params[:id])
   end
 
   def set_associations

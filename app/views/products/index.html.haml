@@ -1,4 +1,7 @@
 %div{ class: "container" }
+  %div{ class: "text-right bottom-margin" }
+    = link_to "Back to Main page", "main#index", class: "btn btn-primary"
+
   %div{ class: "text-center bottom-margin" }
     %h1
       Products
@@ -21,6 +24,31 @@
             Supplier Company
           %th{class: "text-center" }
             Actions
-        - @products.each do |product|
-          = render "product_summary", product: product
 
+        - @products.each do |product|
+          %tr
+            %td
+              = product.id
+
+            %td
+              %h4
+                = product.product_name
+
+            - if product.category
+              %td
+                = product.category.category_name
+            - else
+              %td{style: "color:LightGray"}
+                N/A
+
+            - if product.supplier
+              %td
+                = product.supplier.company_name
+            - else
+              %td{style: "color:LightGray"}
+                N/A
+
+            %td{ class: "text-center" }
+              = link_to "Show", product, class: "btn btn-info"
+              = link_to "Update", edit_product_path(product), class: "btn btn-warning"
+              = link_to "Delete", product, method: :delete, class: 'btn btn-danger'

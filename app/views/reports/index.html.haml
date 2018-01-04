@@ -1,0 +1,49 @@
+%div{ class: "container" }
+  %div{ class: "text-right bottom-margin" }
+    = link_to "Back to Main page", "main#index", class: "btn btn-primary"
+
+  %div{ class: "text-center bottom-margin" }
+    %h1
+      Raporty
+    %div{ class: "text-left bottom-margin" }
+      %h3
+        1. Lista klientów, którzy nie złożyli żadnego zamówienia
+      %h4
+        Parametry raportu:
+        = simple_form_for :report, url: customers_without_orders_path, method: :get do |form|
+          %div{ class: "row" }
+            %div{ class: "col-xl" }
+              %table{ class: "table table-striped" }
+                %tr
+                  %th
+                    Okres
+                  %td
+                    Od
+                  %td
+                    = form.date_field :start_date,
+                     as: :date,
+                     html5: true,
+                     value: Time.now.beginning_of_year.strftime('%Y-%m-%d')
+                  %td
+                    Do
+                  %td
+                    = form.date_field :end_date,
+                     as: :date,
+                     max: Date.today,
+                     html5: true,
+                     value: Time.now.strftime('%Y-%m-%d')
+                %tr
+                  %th
+                    Kategoria produktu
+                  %td
+                    -# empty column
+                  %td
+                    = form.input :category,
+                     collection: @categories,
+                     label_method: lambda { |category| "##{category.id} #{category.category_name}" },
+                     value_method: :category_name,
+                     include_blank: false,
+                     label: false
+
+          %div{ class: "text-right" }
+            = form.button :submit, "Generate", class: "btn btn-info submit"

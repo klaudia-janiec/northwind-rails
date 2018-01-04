@@ -1,0 +1,51 @@
+%div{ class: "container" }
+  %div{ class: "row" }
+    %div{ class: "col-xs-4 col-xs-offset-4" }
+      %h2
+        Filter by:
+      = simple_form_for :filter, url: orders_path, method: :get do |f|
+        Product:
+        = f.input :product,
+          collection: products,
+          label_method: lambda { |product| "##{product.id} #{product.product_name}" },
+          value_method: :id,
+          label: false,
+          include_blank: "",
+          selected: filter_params&.dig("product")
+        Shipper:
+        = f.input :shipper,
+          collection: shippers,
+          label_method: lambda { |shipper| "##{shipper.id} #{shipper.company_name}" },
+          value_method: :id,
+          label: false,
+          include_blank: "",
+          selected: filter_params&.dig("shipper")
+        Customer:
+        = f.input :customer,
+          collection: customers,
+          label_method: lambda { |customer| "##{customer.id} #{customer.company_name}" },
+          value_method: :id,
+          label: false,
+          include_blank: "",
+          selected: filter_params&.dig("customer")
+        Employee:
+        = f.input :employee,
+          collection: employees,
+          label_method: lambda { |employee| "##{employee.id} #{employee.first_name} #{employee.last_name}" },
+          value_method: :id,
+          label: false,
+          include_blank: "",
+          selected: filter_params&.dig("employee")
+        Minimal total price:
+        = f.input :min_total_price,
+          as: :integer,
+          label: false,
+          input_html: { value: filter_params&.dig("min_total_price") }
+        Maximum total price:
+        = f.input :max_total_price,
+          as: :integer,
+          label: false,
+          input_html: { value: filter_params&.dig("max_total_price") }
+        %br
+        = f.button :submit, "Filter", class: "btn btn-info filter btn-small"
+        = link_to "Clean filters", orders_path, class: "btn btn-warning filter btn-small"

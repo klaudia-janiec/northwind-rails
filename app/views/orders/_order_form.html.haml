@@ -6,7 +6,7 @@
       = simple_form_for order do |f|
         = f.input :customer_id, collection: @customers, label_method: lambda { |customer| "##{customer.id} #{customer.company_name}" }, :value_method => :id, :label => "Customer"
         = f.input :employee_id, collection: @employees, label_method: lambda { |employee| "##{employee.id} #{employee.first_name} #{employee.last_name}" }, :value_method => :id, :label => "Employee"
-        = field_set_tag "Order details" do
+        = field_set_tag "Order details", id: "order_details_fieldset" do
           = f.simple_fields_for :order_details do |order_detail|
             = render 'order_detail_fields', f: order_detail
           .links
@@ -15,12 +15,17 @@
           = f.label(:required_date, "Required date")
           = f.date_field :required_date, as: :date, min: Date.today, html5: true
           = f.input :ship_via, collection: @shippers, label_method: lambda { |shipper| "##{shipper.id} #{shipper.company_name}" }, :value_method => :id, :label => "Ship via"
-          = f.input :freight
+          = f.input :freight, input_html: { min: 0 }
           = f.input :ship_name
           = f.input :ship_address
           = f.input :ship_city
           = f.input :ship_region
           = f.input :ship_postal_code
           = f.input :ship_country, label: "Ship country", as: :string
+        %hr
+        %h2
+          Total price
+        %p{ id: "total_price" }
+          = number_to_currency(@order.respond_to?(:total_price) ? @order.total_price.round(2) : 0.00, precision: 2)
         %br
         = f.button :submit, "Submit", class: "btn btn-info submit"

@@ -1,0 +1,13 @@
+%div{ class: "container" }
+  %div{ class: "text-center bottom-margin" }
+    %h1
+      Reports
+    = link_to "Back to all reports", reports_path, class: "btn btn-info"
+  %div{ class: "text-center bottom-margin" }
+    %h4
+      ="Lista klientów, którzy nie złożyli żadnego zamówienia na produkt z kategorii '#{@parameters[:category]}' w okresie od #{@parameters[:start_date]} do #{@parameters[:end_date]}."
+    - @customers.each do |customer|
+      %div{ class: "row" }
+        %div{ class: "col-xl" }
+          %table{ class: "table table-striped" }
+            = render "customers_list", customer: customer
