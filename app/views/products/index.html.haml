@@ -8,7 +8,9 @@
     = link_to "Add new product", new_product_path, class: "btn btn-success"
 
   %div{ class: "text-left" }
-    = render "product_summary_filter_form", categories: @categories
+    = render "product_summary_filter_form",
+     categories: @categories,
+     filter_params: @filter_params
 
   %div{ class: "row" }
     %div{ class: "col-xl" }

@@ -7,7 +7,8 @@
       %td
         Name:
         = f.input :product_name,
-          label: false
+          label: false,
+          input_html: {value: filter_params&.dig("product_name")}
       %td
         Category:
         = f.input :category_id,
@@ -15,10 +16,8 @@
           label_method: lambda { |category| "##{category.id} #{category.category_name}" },
           value_method: :id,
           include_blank: true,
-          label: false
+          label: false,
+          selected: filter_params&.dig("category_id")
       %td{ colspan: 2}
         = f.button :submit, "Filter", class: "btn btn-info submit btn-small"
-        -#= link_to "Filter with link_to",
-        -#  products_path(product_name: "XXX", category: "YYY"),
-        -#  class: "btn btn-info submit btn-small"
         = link_to "Clean filters", products_path, class: "btn btn-warning submit btn-small"
