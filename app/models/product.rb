@@ -1,4 +1,6 @@
 class Product < ApplicationRecord
+  include Filterable
+
   belongs_to :supplier, optional: true
   belongs_to :category, optional: true
   has_many :order_details
