@@ -3,7 +3,12 @@ class ProductsController < ApplicationController
   before_action :set_associations, only: %i[new edit]
 
   def index
-    @products = Product.includes(:supplier, :category).order(:id).all
+    @products = Product
+                .includes(:supplier, :category)
+                .filter(filter_params)
+                .order(:id)
+                .all
+    @categories = Category.all.order(:id)
   end
 
   def show
@@ -55,13 +60,17 @@ class ProductsController < ApplicationController
 
   def permitted_attributes
     params.require(:product).permit(
-        :product_name,
-        :quantity_per_unit,
-        :unit_price,
-        :units_in_stock,
-        :reorder_level,
-        :discountinued
+      :product_name,
+      :quantity_per_unit,
+      :unit_price,
+      :units_in_stock,
+      :reorder_level,
+      :discountinued
     )
+  end
+
+  def filter_params
+    @filter_params ||= params[:filter]&.slice(:product_name, :category_id)
   end
 
   def set_product

@@ -7,17 +7,50 @@
       Products
     = link_to "Add new product", new_product_path, class: "btn btn-success"
 
-  - @products.each do |product|
-    %div{ class: "row" }
-      %div{ class: "col-xl" }
-        %table{ class: "table table-striped" }
+  %div{ class: "text-left" }
+    = render "product_summary_filter_form",
+     categories: @categories,
+     filter_params: @filter_params
+
+  %div{ class: "row" }
+    %div{ class: "col-xl" }
+      %table{ class: "table table-striped" }
+        %tr
+          %th
+            ID
+          %th
+            Product Name
+          %th
+            Category Name
+          %th
+            Supplier Company
+          %th{class: "text-center" }
+            Actions
+
+        - @products.each do |product|
           %tr
-            %td{ class: "col-md-3" }
+            %td
               = product.id
+
             %td
               %h4
                 = product.product_name
-            %td{ colspan: 2, class: "text-center", style: "text-align: right"}
+
+            - if product.category
+              %td
+                = product.category.category_name
+            - else
+              %td{style: "color:LightGray"}
+                N/A
+
+            - if product.supplier
+              %td
+                = product.supplier.company_name
+            - else
+              %td{style: "color:LightGray"}
+                N/A
+
+            %td{ class: "text-center" }
               = link_to "Show", product, class: "btn btn-info"
               = link_to "Update", edit_product_path(product), class: "btn btn-warning"
               = link_to "Delete", product, method: :delete, class: 'btn btn-danger'
