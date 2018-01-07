@@ -1,15 +1,14 @@
-%h4
-  Filter products by:
-= simple_form_for :filter, url: products_path, method: :get do |f|
-  - f.input :method, :as => :hidden, :input_html => { :value => "some value" }
-  %table
-    %tr
-      %td
+%div{ class: "container" }
+  %div{ class: "row" }
+    %div{ class: "col-xs-4 col-xs-offset-4" }
+      %h4
+        Filter products by:
+      = simple_form_for :filter, url: products_path, method: :get do |f|
+        - f.input :method, :as => :hidden, :input_html => { :value => "some value" }
         Name:
         = f.input :product_name,
           label: false,
           input_html: {value: filter_params&.dig("product_name")}
-      %td
         Category:
         = f.input :category_id,
           collection: categories,
@@ -18,6 +17,5 @@
           include_blank: true,
           label: false,
           selected: filter_params&.dig("category_id")
-      %td{ colspan: 2}
-        = f.button :submit, "Filter", class: "btn btn-info submit btn-small"
-        = link_to "Clean filters", products_path, class: "btn btn-warning submit btn-small"
+        = f.button :submit, "Filter", class: "btn btn-info filter btn-small"
+        = link_to "Clean filters", products_path, class: "btn btn-warning filter btn-small"
