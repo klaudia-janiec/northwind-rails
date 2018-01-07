@@ -1,13 +1,13 @@
 class ProductsController < ApplicationController
-  before_action :set_product, only: %i[show destroy update edit]
+  before_action :set_product, only: %i[update destroy]
+  before_action :set_product_with_associations, only: %i[show edit]
   before_action :set_associations, only: %i[new edit]
 
   def index
     @products = Product
-                .includes(:supplier, :category)
+                .eager_load(:supplier, :category)
                 .filter(filter_params)
                 .order(:id)
-                .all
     @categories = Category.all.order(:id)
   end
 
@@ -23,9 +23,8 @@ class ProductsController < ApplicationController
   end
 
   def create
-    @product = Product.new
+    @product = Product.new(units_on_order: 0)
     @product.assign_attributes(permitted_attributes)
-    @product.assign_attributes(units_on_order: 0)
 
     if @product.save
       redirect_to product_path(@product)
@@ -60,6 +59,8 @@ class ProductsController < ApplicationController
 
   def permitted_attributes
     params.require(:product).permit(
+      :category_id,
+      :supplier_id,
       :product_name,
       :quantity_per_unit,
       :unit_price,
@@ -75,6 +76,10 @@ class ProductsController < ApplicationController
 
   def set_product
     @product = Product.find(params[:id])
+  end
+
+  def set_product_with_associations
+    @product = Product.eager_load(:supplier, :category).find(params[:id])
   end
 
   def set_associations
